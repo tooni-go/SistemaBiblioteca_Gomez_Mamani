@@ -44,13 +44,13 @@ public class MenuConsola
                     _prestamoService.RealizarPrestamo();
                     break;
                 case "3":
-                    Console.WriteLine("\nOpción pendiente: flujo de devolución (Parte 2 - segunda mitad).");
+                    _prestamoService.RegistrarDevolucion();
                     break;
                 case "4":
-                    Console.WriteLine("\nOpción pendiente: flujo de reserva (Parte 2 - segunda mitad).");
+                    _prestamoService.RegistrarReserva();
                     break;
                 case "5":
-                    Console.WriteLine("\nOpción pendiente: detalle del socio (Parte 2 - segunda mitad).");
+                    _prestamoService.VerDetalleSocio();
                     break;
                 case "0":
                     continuar = false;
@@ -84,4 +84,6 @@ public class MenuConsola
             Console.WriteLine("---------------------------------------------");
         }
     }
+
+
 }
