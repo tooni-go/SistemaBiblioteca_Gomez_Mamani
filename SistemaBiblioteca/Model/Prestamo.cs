@@ -24,4 +24,6 @@ public partial class Prestamo
     public virtual Libro IsbnNavigation { get; set; } = null!;
 
     public virtual Socio NroSocioNavigation { get; set; } = null!;
+
+    public virtual ICollection<Multa> Multas { get; set; } = new List<Multa>();
 }

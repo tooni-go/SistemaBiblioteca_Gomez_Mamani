@@ -19,6 +19,8 @@ public partial class Socio
 
     public virtual TipoSocio IdTipoSocioNavigation { get; set; } = null!;
 
+    public virtual ICollection<Multa> Multas { get; set; } = new List<Multa>();
+
     public virtual ICollection<Prestamo> Prestamos { get; set; } = new List<Prestamo>();
 
     public virtual ICollection<Reserva> Reservas { get; set; } = new List<Reserva>();

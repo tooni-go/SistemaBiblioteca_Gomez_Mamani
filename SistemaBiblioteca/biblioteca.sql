@@ -7,7 +7,10 @@ PRAGMA foreign_keys = ON;
 -- Tablas de referencia
 CREATE TABLE IF NOT EXISTS TipoSocio (
     IdTipoSocio INTEGER PRIMARY KEY,
-    Descripcion TEXT NOT NULL
+    Descripcion TEXT NOT NULL,
+    MaxLibrosSimultaneos INTEGER NOT NULL,
+    DiasPrestamo INTEGER NOT NULL,
+    MultaPorDia REAL NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS Estado (
@@ -57,11 +60,23 @@ CREATE TABLE IF NOT EXISTS Reserva (
     FOREIGN KEY (IdEstado) REFERENCES Estado (IdEstado)
 );
 
+CREATE TABLE IF NOT EXISTS Multa (
+    IdMulta INTEGER PRIMARY KEY AUTOINCREMENT,
+    NroSocio INTEGER NOT NULL,
+    IdPrestamo INTEGER NOT NULL,
+    Monto REAL NOT NULL,
+    DiasDemora INTEGER NOT NULL,
+    FechaGeneracion TEXT NOT NULL,
+    Abonada INTEGER NOT NULL,
+    FOREIGN KEY (NroSocio) REFERENCES Socio (NroSocio),
+    FOREIGN KEY (IdPrestamo) REFERENCES Prestamo (IdPrestamo)
+);
+
 -- Tipos de socio
-INSERT INTO TipoSocio (IdTipoSocio, Descripcion) VALUES
-    (1, 'Común'),
-    (2, 'Estudiante'),
-    (3, 'Docente');
+INSERT INTO TipoSocio (IdTipoSocio, Descripcion, MaxLibrosSimultaneos, DiasPrestamo, MultaPorDia) VALUES
+    (1, 'Común', 3, 7, 150),
+    (2, 'Estudiante', 5, 14, 75),
+    (3, 'Docente', 8, 30, 50);
 
 -- Estados de préstamo y reserva
 INSERT INTO Estado (IdEstado, Descripcion) VALUES
@@ -110,3 +125,7 @@ INSERT INTO Prestamo (NroSocio, ISBN, FechaPrestamo, FechaVencimiento, FechaDevo
 INSERT INTO Reserva (NroSocio, ISBN, FechaReserva, IdEstado) VALUES
     (1006, '978-9875665673', '2026-06-18', 4),
     (1004, '978-8497594628', '2026-06-22', 4);
+
+-- Multa pendiente de ejemplo (socio 1004, préstamo vencido IdPrestamo = 4)
+INSERT INTO Multa (NroSocio, IdPrestamo, Monto, DiasDemora, FechaGeneracion, Abonada) VALUES
+    (1004, 4, 7800, 52, '2026-05-09', 0);

@@ -19,6 +19,8 @@ public partial class SistemaBibliotecaContext : DbContext
 
     public virtual DbSet<Libro> Libros { get; set; }
 
+    public virtual DbSet<Multa> Multas { get; set; }
+
     public virtual DbSet<Prestamo> Prestamos { get; set; }
 
     public virtual DbSet<Reserva> Reservas { get; set; }
@@ -52,6 +54,21 @@ public partial class SistemaBibliotecaContext : DbContext
             entity.ToTable("Libro");
 
             entity.Property(e => e.Isbn).HasColumnName("ISBN");
+        });
+
+        modelBuilder.Entity<Multa>(entity =>
+        {
+            entity.HasKey(e => e.IdMulta);
+
+            entity.ToTable("Multa");
+
+            entity.HasOne(d => d.IdPrestamoNavigation).WithMany(p => p.Multas)
+                .HasForeignKey(d => d.IdPrestamo)
+                .OnDelete(DeleteBehavior.ClientSetNull);
+
+            entity.HasOne(d => d.NroSocioNavigation).WithMany(p => p.Multas)
+                .HasForeignKey(d => d.NroSocio)
+                .OnDelete(DeleteBehavior.ClientSetNull);
         });
 
         modelBuilder.Entity<Prestamo>(entity =>
