@@ -315,7 +315,6 @@ public class PrestamoService
         string estadoTexto = socio.Activo == 1 ? "Activo" : "Inactivo";
         Console.WriteLine($"Estado:    {estadoTexto}");
 
-        // 2. Préstamos Activos (Los que no devolvió)
         var prestamosActivos = socio.Prestamos.Where(p => p.FechaDevolucion == null).ToList();
         Console.WriteLine($"\n--- Préstamos Activos ({prestamosActivos.Count}) ---");
         if (prestamosActivos.Count == 0)
