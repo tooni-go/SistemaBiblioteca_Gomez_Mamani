@@ -1,39 +1,14 @@
 ﻿using SistemaBiblioteca.Model;
-using System;
-using System.Linq;
+using SistemaBiblioteca.UI;
 
-namespace SistemaBiblioteca
+namespace SistemaBiblioteca;
+
+internal class Program
 {
-    internal class Program
+    static void Main(string[] args)
     {
-        static void Main(string[] args)
-        {
-            using var context = new SistemaBibliotecaContext();
-
-            Console.WriteLine("=============================================");
-            Console.WriteLine("    SISTEMA DE BIBLIOTECA - LIBROS DISPONIBLES");
-            Console.WriteLine("=============================================\n");
-
-            var libros = context.Libros.ToList();
-
-            if (libros.Any())
-            {
-                foreach (var libro in libros)
-                {
-                    Console.WriteLine($"[ISBN: {libro.Isbn}] {libro.Titulo}");
-                    Console.WriteLine($"   Autor:  {libro.Autor}");
-                    Console.WriteLine($"   Género: {libro.Genero}");
-                    Console.WriteLine($"   Copias: {libro.CantidadCopias}");
-                    Console.WriteLine("---------------------------------------------");
-                }
-            }
-            else
-            {
-                Console.WriteLine("No hay libros registrados en la biblioteca.");
-            }
-
-            Console.WriteLine("\nPresione cualquier tecla para salir...");
-            Console.ReadLine();
-        }
+        using var context = new SistemaBibliotecaContext();
+        var menu = new MenuConsola(context);
+        menu.Ejecutar();
     }
 }
