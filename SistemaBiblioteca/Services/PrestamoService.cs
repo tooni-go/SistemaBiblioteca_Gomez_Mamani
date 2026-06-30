@@ -78,7 +78,11 @@ public class PrestamoService
         if (!_reglas.HayCopiasDisponibles(libroSeleccionado.Isbn))
         {
             Console.WriteLine("RN-03: No hay copias disponibles de ese libro.");
-            Console.WriteLine("Próximamente: opción de reserva (pendiente de implementación).");
+            var respuesta = LeerEntrada("¿Desea reservarlo? (s/n): ");
+            if (respuesta.Equals("s", StringComparison.OrdinalIgnoreCase))
+            {
+                RegistrarReservaParaSocio(socio, libroSeleccionado);
+            }
             return;
         }
 
@@ -130,7 +134,7 @@ public class PrestamoService
 
         var prestamosActivos = _context.Prestamos
             .Include(p => p.IsbnNavigation)
-            .Where(p => p.NroSocio == socio.NroSocio && p.IdEstado == ReglasNegocioService.EstadoPrestamoActivo)
+            .Where(p => p.NroSocio == socio.NroSocio && p.FechaDevolucion == null)
             .ToList();
 
         if (prestamosActivos.Count == 0)
@@ -220,6 +224,12 @@ public class PrestamoService
             return;
         }
 
+        if (_reglas.TieneMultasPendientes(socio.NroSocio))
+        {
+            Console.WriteLine("\n[ERROR] RN-02: El socio tiene multas pendientes y no puede reservar libros.");
+            return;
+        }
+
         Console.Write("Ingrese el título, autor o ISBN del libro que desea buscar: ");
         var busqueda = Console.ReadLine()?.Trim().ToLower() ?? "";
 
@@ -250,13 +260,17 @@ public class PrestamoService
         }
 
         var libroSeleccionado = librosBuscados[seleccion - 1];
+        RegistrarReservaParaSocio(socio, libroSeleccionado);
+    }
 
+    private void RegistrarReservaParaSocio(Socio socio, Libro libroSeleccionado)
+    {
         if (_reglas.HayCopiasDisponibles(libroSeleccionado.Isbn))
         {
             Console.WriteLine($"\n[AVISO] Actualmente hay copias disponibles de '{libroSeleccionado.Titulo}'. Podés realizar un préstamo normal desde la Opción 2.");
         }
 
-        bool yaTieneReserva = _context.Reservas.Any(r =>
+        var yaTieneReserva = _context.Reservas.Any(r =>
             r.NroSocio == socio.NroSocio &&
             r.Isbn == libroSeleccionado.Isbn &&
             r.IdEstado == ReglasNegocioService.EstadoReservaPendiente);

@@ -8,12 +8,14 @@ public class MenuConsola
     private readonly SistemaBibliotecaContext _context;
     private readonly ReglasNegocioService _reglas;
     private readonly PrestamoService _prestamoService;
+    private readonly ReporteService _reporteService;
 
     public MenuConsola(SistemaBibliotecaContext context)
     {
         _context = context;
         _reglas = new ReglasNegocioService(context);
         _prestamoService = new PrestamoService(context, _reglas);
+        _reporteService = new ReporteService(context, _reglas);
     }
 
     public void Ejecutar()
@@ -25,12 +27,17 @@ public class MenuConsola
             Console.WriteLine("\n=============================================");
             Console.WriteLine("       SISTEMA DE GESTIÓN DE BIBLIOTECA");
             Console.WriteLine("=============================================");
-            Console.WriteLine("1. Listar libros");
-            Console.WriteLine("2. Realizar préstamo");
-            Console.WriteLine("3. Registrar devolución      [pendiente]");
-            Console.WriteLine("4. Reservar libro            [pendiente]");
-            Console.WriteLine("5. Ver detalle de socio      [pendiente]");
-            Console.WriteLine("0. Salir");
+            Console.WriteLine("1.  Listar libros");
+            Console.WriteLine("2.  Realizar préstamo");
+            Console.WriteLine("3.  Registrar devolución");
+            Console.WriteLine("4.  Reservar libro");
+            Console.WriteLine("5.  Ver detalle de socio");
+            Console.WriteLine("6.  Reporte: libros más prestados");
+            Console.WriteLine("7.  Reporte: socios con multas pendientes");
+            Console.WriteLine("8.  Reporte: préstamos vencidos");
+            Console.WriteLine("9.  Reporte: disponibilidad de un libro");
+            Console.WriteLine("10. Reporte: historial de un socio");
+            Console.WriteLine("0.  Salir");
             Console.Write("Seleccione una opción: ");
 
             var opcion = Console.ReadLine()?.Trim();
@@ -51,6 +58,21 @@ public class MenuConsola
                     break;
                 case "5":
                     _prestamoService.VerDetalleSocio();
+                    break;
+                case "6":
+                    _reporteService.LibrosMasPrestados();
+                    break;
+                case "7":
+                    _reporteService.SociosConMultasPendientes();
+                    break;
+                case "8":
+                    _reporteService.PrestamosVencidos();
+                    break;
+                case "9":
+                    _reporteService.DisponibilidadLibro();
+                    break;
+                case "10":
+                    _reporteService.HistorialSocio();
                     break;
                 case "0":
                     continuar = false;
@@ -84,6 +106,4 @@ public class MenuConsola
             Console.WriteLine("---------------------------------------------");
         }
     }
-
-
 }
