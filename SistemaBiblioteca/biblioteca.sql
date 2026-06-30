@@ -1,10 +1,5 @@
--- Sistema de Gestión de Biblioteca
--- Script de creación de tablas y datos iniciales (SQLite)
--- Para generar la base: sqlite3 Sistema_Biblioteca.db < biblioteca.sql
-
 PRAGMA foreign_keys = ON;
 
--- Tablas de referencia
 CREATE TABLE IF NOT EXISTS TipoSocio (
     IdTipoSocio INTEGER PRIMARY KEY,
     Descripcion TEXT NOT NULL,
@@ -72,13 +67,11 @@ CREATE TABLE IF NOT EXISTS Multa (
     FOREIGN KEY (IdPrestamo) REFERENCES Prestamo (IdPrestamo)
 );
 
--- Tipos de socio
 INSERT INTO TipoSocio (IdTipoSocio, Descripcion, MaxLibrosSimultaneos, DiasPrestamo, MultaPorDia) VALUES
     (1, 'Común', 3, 7, 150),
     (2, 'Estudiante', 5, 14, 75),
     (3, 'Docente', 8, 30, 50);
 
--- Estados de préstamo y reserva
 INSERT INTO Estado (IdEstado, Descripcion) VALUES
     (1, 'Activo'),
     (2, 'Devuelto'),
@@ -87,7 +80,6 @@ INSERT INTO Estado (IdEstado, Descripcion) VALUES
     (5, 'Cumplida'),
     (6, 'Cancelada');
 
--- Libros (mínimo 5, con varias copias)
 INSERT INTO Libro (ISBN, Titulo, Autor, Genero, CantidadCopias) VALUES
     ('978-0141439518', 'Orgullo y prejuicio', 'Jane Austen', 'Ficción', 4),
     ('978-8497594628', 'Cien años de soledad', 'Gabriel García Márquez', 'Ficción', 3),
@@ -96,7 +88,6 @@ INSERT INTO Libro (ISBN, Titulo, Autor, Genero, CantidadCopias) VALUES
     ('978-9500305334', 'Sapiens', 'Yuval Noah Harari', 'Historia', 3),
     ('978-8498386964', 'Don Quijote de la Mancha', 'Miguel de Cervantes', 'Ficción', 2);
 
--- Socios (mínimo 5, distintos tipos)
 INSERT INTO Socio (NroSocio, Nombre, Apellido, Email, IdTipoSocio, Activo) VALUES
     (1001, 'Ana', 'Gómez', 'ana.gomez@email.com', 1, 1),
     (1002, 'Lucas', 'Mamani', 'lucas.mamani@email.com', 2, 1),
@@ -105,27 +96,22 @@ INSERT INTO Socio (NroSocio, Nombre, Apellido, Email, IdTipoSocio, Activo) VALUE
     (1005, 'Sofía', 'López', 'sofia.lopez@email.com', 2, 0),
     (1006, 'Diego', 'Pérez', 'diego.perez@email.com', 3, 1);
 
--- Préstamos activos
 INSERT INTO Prestamo (NroSocio, ISBN, FechaPrestamo, FechaVencimiento, FechaDevolucion, IdEstado) VALUES
     (1001, '978-0141439518', '2026-06-20', '2026-06-27', NULL, 1),
     (1002, '978-8497594628', '2026-06-15', '2026-06-29', NULL, 1),
     (1003, '978-9875665673', '2026-06-01', '2026-07-01', NULL, 1);
 
--- Préstamos vencidos (sin devolver)
 INSERT INTO Prestamo (NroSocio, ISBN, FechaPrestamo, FechaVencimiento, FechaDevolucion, IdEstado) VALUES
     (1004, '978-8491050691', '2026-05-01', '2026-05-08', NULL, 3),
     (1002, '978-9500305334', '2026-05-10', '2026-05-24', NULL, 3);
 
--- Préstamos devueltos (historial)
 INSERT INTO Prestamo (NroSocio, ISBN, FechaPrestamo, FechaVencimiento, FechaDevolucion, IdEstado) VALUES
     (1001, '978-8498386964', '2026-04-01', '2026-04-08', '2026-04-07', 2),
     (1006, '978-0141439518', '2026-03-10', '2026-04-09', '2026-04-05', 2);
 
--- Reservas pendientes
 INSERT INTO Reserva (NroSocio, ISBN, FechaReserva, IdEstado) VALUES
     (1006, '978-9875665673', '2026-06-18', 4),
     (1004, '978-8497594628', '2026-06-22', 4);
 
--- Multa pendiente de ejemplo (socio 1004, préstamo vencido IdPrestamo = 4)
 INSERT INTO Multa (NroSocio, IdPrestamo, Monto, DiasDemora, FechaGeneracion, Abonada) VALUES
     (1004, 4, 7800, 52, '2026-05-09', 0);
