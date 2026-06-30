@@ -33,7 +33,7 @@ public partial class SistemaBibliotecaContext : DbContext, ISistemaBibliotecaCon
     {
         if (!optionsBuilder.IsConfigured)
         {
-            var dbPath = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "Sistema_Biblioteca.db"));
+            var dbPath = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "SistemaBiblioteca.db"));
             optionsBuilder.UseSqlite($"Data Source={dbPath}");
         }
     }
