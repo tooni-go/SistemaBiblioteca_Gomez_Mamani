@@ -3,14 +3,14 @@ using SistemaBiblioteca.Services;
 
 namespace SistemaBiblioteca.UI;
 
-public class MenuConsola
+public class MenuConsola : IMenuConsola
 {
-    private readonly SistemaBibliotecaContext _context;
-    private readonly ReglasNegocioService _reglas;
-    private readonly PrestamoService _prestamoService;
-    private readonly ReporteService _reporteService;
+    private readonly ISistemaBibliotecaContext _context;
+    private readonly IReglasNegocioService _reglas;
+    private readonly IPrestamoService _prestamoService;
+    private readonly IReporteService _reporteService;
 
-    public MenuConsola(SistemaBibliotecaContext context)
+    public MenuConsola(ISistemaBibliotecaContext context)
     {
         _context = context;
         _reglas = new ReglasNegocioService(context);
@@ -20,6 +20,7 @@ public class MenuConsola
 
     public void Ejecutar()
     {
+        MostrarLibrosDisponibles();
         var continuar = true;
 
         while (continuar)
@@ -103,6 +104,36 @@ public class MenuConsola
             Console.WriteLine($"   Autor:  {libro.Autor}");
             Console.WriteLine($"   Género: {libro.Genero}");
             Console.WriteLine($"   Copias: {disponibles} disponibles / {libro.CantidadCopias} totales");
+            Console.WriteLine("---------------------------------------------");
+        }
+    }
+
+    private void MostrarLibrosDisponibles()
+    {
+        Console.WriteLine("\n=============================================");
+        Console.WriteLine("        LIBROS DISPONIBLES ACTUALMENTE");
+        Console.WriteLine("=============================================");
+
+        var libros = _context.Libros.OrderBy(l => l.Titulo).ToList();
+        var hayDisponibles = false;
+
+        foreach (var libro in libros)
+        {
+            var disponibles = _reglas.ObtenerCopiasDisponibles(libro.Isbn);
+            if (disponibles > 0)
+            {
+                hayDisponibles = true;
+                Console.WriteLine($"[ISBN: {libro.Isbn}] {libro.Titulo}");
+                Console.WriteLine($"   Autor:  {libro.Autor}");
+                Console.WriteLine($"   Género: {libro.Genero}");
+                Console.WriteLine($"   Copias disponibles: {disponibles} de {libro.CantidadCopias} totales");
+                Console.WriteLine("---------------------------------------------");
+            }
+        }
+
+        if (!hayDisponibles)
+        {
+            Console.WriteLine("No hay ningún libro disponible para préstamo en este momento.");
             Console.WriteLine("---------------------------------------------");
         }
     }

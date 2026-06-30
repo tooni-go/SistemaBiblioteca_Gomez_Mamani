@@ -1,9 +1,9 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace SistemaBiblioteca.Model;
 
-public partial class Prestamo
+public partial class Prestamo : IPrestamo
 {
     public int IdPrestamo { get; set; }
 

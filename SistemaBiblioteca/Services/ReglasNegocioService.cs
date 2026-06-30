@@ -3,7 +3,7 @@ using SistemaBiblioteca.Model;
 
 namespace SistemaBiblioteca.Services;
 
-public class ReglasNegocioService
+public class ReglasNegocioService : IReglasNegocioService
 {
     public const int EstadoPrestamoActivo = 1;
     public const int EstadoPrestamoDevuelto = 2;
@@ -12,9 +12,9 @@ public class ReglasNegocioService
     public const int EstadoReservaCumplida = 5;
     public const int EstadoReservaCancelada = 6;
 
-    private readonly SistemaBibliotecaContext _context;
+    private readonly ISistemaBibliotecaContext _context;
 
-    public ReglasNegocioService(SistemaBibliotecaContext context)
+    public ReglasNegocioService(ISistemaBibliotecaContext context)
     {
         _context = context;
     }

@@ -1,6 +1,6 @@
 namespace SistemaBiblioteca.Model;
 
-public partial class Multa
+public partial class Multa : IMulta
 {
     public int IdMulta { get; set; }
 

@@ -1,9 +1,9 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace SistemaBiblioteca.Model;
 
-public partial class TipoSocio
+public partial class TipoSocio : ITipoSocio
 {
     public int IdTipoSocio { get; set; }
 

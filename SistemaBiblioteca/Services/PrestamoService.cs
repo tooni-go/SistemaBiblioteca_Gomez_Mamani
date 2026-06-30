@@ -3,12 +3,12 @@ using SistemaBiblioteca.Model;
 
 namespace SistemaBiblioteca.Services;
 
-public class PrestamoService
+public class PrestamoService : IPrestamoService
 {
-    private readonly SistemaBibliotecaContext _context;
-    private readonly ReglasNegocioService _reglas;
+    private readonly ISistemaBibliotecaContext _context;
+    private readonly IReglasNegocioService _reglas;
 
-    public PrestamoService(SistemaBibliotecaContext context, ReglasNegocioService reglas)
+    public PrestamoService(ISistemaBibliotecaContext context, IReglasNegocioService reglas)
     {
         _context = context;
         _reglas = reglas;

@@ -1,9 +1,9 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace SistemaBiblioteca.Model;
 
-public partial class Libro
+public partial class Libro : ILibro
 {
     public string Isbn { get; set; } = null!;
 

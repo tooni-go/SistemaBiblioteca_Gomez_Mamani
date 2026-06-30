@@ -1,10 +1,10 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 
 namespace SistemaBiblioteca.Model;
 
-public partial class SistemaBibliotecaContext : DbContext
+public partial class SistemaBibliotecaContext : DbContext, ISistemaBibliotecaContext
 {
     public SistemaBibliotecaContext()
     {

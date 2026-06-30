@@ -3,12 +3,12 @@ using SistemaBiblioteca.Model;
 
 namespace SistemaBiblioteca.Services;
 
-public class ReporteService
+public class ReporteService : IReporteService
 {
-    private readonly SistemaBibliotecaContext _context;
-    private readonly ReglasNegocioService _reglas;
+    private readonly ISistemaBibliotecaContext _context;
+    private readonly IReglasNegocioService _reglas;
 
-    public ReporteService(SistemaBibliotecaContext context, ReglasNegocioService reglas)
+    public ReporteService(ISistemaBibliotecaContext context, IReglasNegocioService reglas)
     {
         _context = context;
         _reglas = reglas;

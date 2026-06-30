@@ -1,9 +1,9 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace SistemaBiblioteca.Model;
 
-public partial class Reserva
+public partial class Reserva : IReserva
 {
     public int IdReserva { get; set; }
 

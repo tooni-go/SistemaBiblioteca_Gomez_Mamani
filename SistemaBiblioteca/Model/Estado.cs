@@ -1,9 +1,9 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace SistemaBiblioteca.Model;
 
-public partial class Estado
+public partial class Estado : IEstado
 {
     public int IdEstado { get; set; }
 
